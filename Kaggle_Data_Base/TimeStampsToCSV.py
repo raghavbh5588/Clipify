@@ -6,7 +6,7 @@ timestampsarray = []
 timeInSeconds = []
 
 while i <= 95:
-    timestamps = pd.read_table("Timestamps\Episode-"+ str(i) +".txt", encoding= 'unicode_escape', header = None)
+    timestamps = pd.read_table("timestamps\Episode-"+ str(i) +".txt", encoding= 'unicode_escape', header = None)
 
     df = pd.DataFrame(timestamps)
 
@@ -24,9 +24,11 @@ while i <= 95:
     timestampsarray = numpy.delete(timestampsarray, -1)
 
 
-    timeInSeconds.__iadd__([timestampsarray])
+    timeInSeconds.append([timestampsarray])
     i = i + 1
 
 FinalTimeStamps = pd.DataFrame(timeInSeconds)
+
+print(FinalTimeStamps)
 
 FinalTimeStamps.to_csv("TimeStampsInSeconds.csv", index = None)
