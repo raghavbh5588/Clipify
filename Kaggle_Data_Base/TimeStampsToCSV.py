@@ -2,7 +2,7 @@ import pandas as pd
 import numpy
 import os
 
-os.chdir(r'C:\Users\ragha\Clipify\Kaggle_Data_Base')
+#os.chdir(r'C:\Users\ragha\Clipify\Kaggle_Data_Base')
 
 i= 1
 
