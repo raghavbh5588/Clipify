@@ -1,5 +1,9 @@
 import pandas as pd
 import numpy
+import os
+
+os.chdir(r'C:\Users\ragha\Clipify\Kaggle_Data_Base')
+
 i= 1
 
 timestampsarray = []
@@ -24,11 +28,12 @@ while i <= 95:
     timestampsarray = numpy.delete(timestampsarray, -1)
 
 
-    timeInSeconds.append([timestampsarray])
+    timeInSeconds.__iadd__([timestampsarray])
     i = i + 1
 
 FinalTimeStamps = pd.DataFrame(timeInSeconds)
 
-print(FinalTimeStamps)
+
+FinalTimeStamps = FinalTimeStamps.tail(-1)
 
 FinalTimeStamps.to_csv("TimeStampsInSeconds.csv", index = None)
