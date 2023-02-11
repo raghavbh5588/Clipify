@@ -11,6 +11,15 @@ while i <= 95:
     df = pd.DataFrame(transcript)
 
     df = df[0].str.split(" ", n=1, expand=True)
+
+    labels = []
+    for i in range(len(df)):
+        labels.append(0)
+
+    df['Labels'] = labels
+
     df.to_csv("Transcripts\Transcript"+ str(i) +".csv", index = None, header= None)
+    
+  
 
     i = i + 1

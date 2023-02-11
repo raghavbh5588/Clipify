@@ -11,6 +11,9 @@ def readfile(filename):
         lines = f.readlines()
         lines = [line.strip() for line in lines]
         lines = [line.split(',') for line in lines]
+        for line in lines:
+            if line == ['']:
+                lines.remove(line)
 
     return lines
 
@@ -20,11 +23,11 @@ def gettrans(timestamps, topic):
     indexes = [[] for i in topic]
 
     for i in range(len(topic)):
-        for j in range(len(timestamps)):
-            if int(float(timestamps[j][0])) == int(float(topic[i])) or ( int(float(timestamps[j][0])) <= ((int(float(topic[i])))+3) and int(float(timestamps[j][0])) >= ((int(float(topic[i])))-3)):
-
-                indexes.append([j-3,j-2,j-1,j,j+1,j+2,j+3])
-                j += 3 # skip the next 3 lines to avoid duplicates
+        for j in range(0,len(timestamps),9):
+            if int(float(timestamps[j][0])) == int(topic[i]) or ( int(float(timestamps[j][0])) <= ((int(topic[i]))+15) and int(float(timestamps[j][0])) >= ((int(topic[i]))-15)):
+                
+                indexes.append([j-4,j-3,j-2,j-1,j,j+1,j+2,j+3,j+4])
+                    
     return indexes
 
 
@@ -35,39 +38,57 @@ def partition(indexes,timestamps):
     transitions =[[] for i in range(len(indexes))]
     transpara = ""
     transtime = 0
-    temp = ""
+    value = 0
+
     
     for i in range(len(indexes)):
-        
-        for j in range(len(indexes[i])):
+        transpara = ""
+        for j in range(0,len(indexes[i])):
+
             value = indexes[i][j]
-            
-            temp = timestamps[value-3][1]
+            temp = timestamps[value][1]
             transpara += temp + " "
-
-            temp = timestamps[value-3][0]
+            #print(transpara)
+        for k in range(0,len(indexes[i])):
+            temp = timestamps[value][0]
             transtime = temp
-            print(transtime)
-            transitions[i].append(transtime)
-            transitions[i].append(transpara)
-    
-
+            #print(transtime)
+        if transtime == 0:
+            continue
+        transitions[i].append(transtime)
+        transitions[i].append(transpara)
+        
     return transitions
 
+# Read the file and store the data in a list of lists
+topics = readfile("/Users/johnsurette/ITI1122JAVA/Clipify/Kaggle_Data_Base/TimeStampsInSeconds.csv")
 
-
-
-topics = readfile('TimeStampsInSeconds.csv')
-
+#Define the topic of interest
+topicsnum = 0
+# Set the episode row of the transcript
 topic = topics[0]
 
-timestamps = readfile('Transcript1.csv')
+timestamps = readfile("/Users/johnsurette/ITI1122JAVA/Clipify/Kaggle_Data_Base/transcripts/Transcript1.csv")
 
 
 timeindexes = gettrans(timestamps,topic)
 
-
 transitionsections = partition(timeindexes,timestamps)
+
+transitionarray = pd.DataFrame(transitionsections)
+
+transitionarray.dropna(inplace=True)
+
+labels = []
+for i in range(len(transitionarray)):
+        labels.append(1)
+
+transitionarray['Labels'] = labels
+
+transitionarray.to_csv("Transition" + str(topicsnum) + ".csv", index = None)
+
+
+
 
 
 
