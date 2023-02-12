@@ -169,8 +169,8 @@ dataarray = partitionCOMP(indexes,timestamps)
 dataarray = pd.DataFrame(dataarray)
 dataarray.dropna(inplace=True)
 
-#labels = []
-#for i in range(len(dataarray)):
+labels = []
+for i in range(len(dataarray)):
         #labels.append(0)
     
 #dataarray['Labels'] = labels

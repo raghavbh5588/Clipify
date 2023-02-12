@@ -1,7 +1,7 @@
 import cohere
 import numpy as np
-import numpy.array_api as npa
 from numpy import vectorize
+from array import array
 import pandas as pd
 co = cohere.Client('CP3qAhd01F0x9Y01BElLse0AgQ9yY3ISj2nW4CH0') # This is your trial API key
 from cohere.classify import Example
@@ -27,19 +27,32 @@ def readfile(filename):
 examples = readfile(examp)
 examples = pd.DataFrame(examples)
 examples = examples.to_numpy()
-np.vectorize(Example)
+
 
 testin = '/Users/johnsurette/ITI1122JAVA/Clipify/RegularStrs3.csv'
 testing = readfile(testin)
 testing = pd.DataFrame(testing)
 testing = testing.to_numpy()
+testing = testing.tolist()
 
 
+
+exampleArr = []
+
+for example in examples:
+    example = Example(example[0], example[1])
+    exampleArr.append(example)
+
+
+
+example = np.asarray(exampleArr)
+example = example.tolist()
+example = example.array(str('u'), example)
 
 response = co.classify(
   model= "large",
   inputs= testing,
-  examples= examples,
+  examples= exampleArr,
 )
 
 print(response.classifications)
