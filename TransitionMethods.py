@@ -120,11 +120,11 @@ def compress(timestamps):
 topics = readfile("/Users/johnsurette/ITI1122JAVA/Clipify/Kaggle_Data_Base/TimeStampsInSeconds.csv")
 
 #Define the topic of interest
-topicsnum = 2
+topicsnum = 3
 # Set the episode row of the transcript
 topic = topics[topicsnum]
 
-timestamps = readfile("/Users/johnsurette/ITI1122JAVA/Clipify/Kaggle_Data_Base/transcripts/Transcript2.csv")
+timestamps = readfile("/Users/johnsurette/ITI1122JAVA/Clipify/Kaggle_Data_Base/transcripts/Transcript3.csv")
 
 
 timeindexes = gettrans(timestamps,topic)
@@ -169,11 +169,11 @@ dataarray = partitionCOMP(indexes,timestamps)
 dataarray = pd.DataFrame(dataarray)
 dataarray.dropna(inplace=True)
 
-labels = []
-for i in range(len(dataarray)):
-        labels.append(0)
+#labels = []
+#for i in range(len(dataarray)):
+        #labels.append(0)
     
-dataarray['Labels'] = labels
+#dataarray['Labels'] = labels
 
 dataarray.to_csv("RegularStrs" + str(topicsnum) + ".csv", index = None)
    
